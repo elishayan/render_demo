@@ -1,0 +1,58 @@
+
+.sidebar-heading{
+font-family: "Arial";
+sans-serif;
+font-size: 28px;
+font-weight: bold;
+color: #433;
+margin: 10px 20px 10px;
+
+}
+
+.logo {
+  max-width: 20%;
+  height: auto;
+}
+
+
+
+.knob-container {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 0.1px;
+ display: flex;
+flex-wrap: nowrap; 
+/* flex-direction: column-reverse; */
+/* flex-flow: row */
+/*  Adjust the width of the left side as needed */
+/* justify-content:flex-start */
+/*  align-items: flex-end */
+/*  width: 20%; */
+flex-grow: 4; 
+ 
+padding: 40px;
+box-sizing: border-box;
+}
+
+.banner {    height: 65px;
+/*   */
+    margin: 10px -10px -20px;
+    background-color: rgb(66, 247, 190);
+    border-radius: p2x;
+}
+
+
+.banner h2{
+    color: white;
+    padding-top: 10px;
+    margin-left: 5%;
+    display: inline-block;
+}
+
+.banner Img{
+    position: relative;
+    float: right;
+    right: 10px;
+    height: 75px;
+}
+Footer
