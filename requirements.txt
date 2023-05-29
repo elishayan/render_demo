@@ -1,6 +1,7 @@
 dash
 pandas
 gunicorn
-dash-tools
+dash_tools
 dash_daq
 plotly
+jupyter_dash
