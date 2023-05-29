@@ -14,7 +14,7 @@ import pandas as pd
 
 
 
-app = Dash(__name__)
+app = JupyterDash(__name__)
 server = app.server
 
 # Create a Plotly subplot with multiple subplots
