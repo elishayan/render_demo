@@ -1,217 +1,178 @@
-   "source": [
-    "import dash\n",
-    "import dash_html_components as html\n",
-    "import plotly.graph_objects as go\n",
-    "from plotly.subplots import make_subplots\n",
-    "import dash_daq as daq\n",
-    "from jupyter_dash import JupyterDash\n",
-    "import dash\n",
-    "import dash_bootstrap_components as dbc\n",
-    "import dash_html_components as html\n",
-    "import dash_core_components as dcc\n",
-    "import plotly.express as px\n",
-    "from dash.dependencies import Input, Output\n",
-    "import pandas as pd\n",
-    "\n",
-    "\n",
-    "\n",
-    "app = Dash(__name__)\n",
-    "server = app.server\n",
-    "\n",
-    "# Create a Plotly subplot with multiple subplots\n",
-    "#fig = make_subplots(rows=2, cols=2, subplot_titles=('HTF_in', 'HTF_out', 'HTF_flow', 'AIR_in'))\n",
-    "\n",
-    "# Define the initial traces for each subplot\n",
-    "# traces = []\n",
-    "# for i, col in enumerate(df.columns):\n",
-    "#     trace = go.Scatter(x=[], y=[], mode='lines', name=col)\n",
-    "#     fig.add_trace(trace, row=(i // 3) + 1, col=(i % 3) + 1)\n",
-    "#     traces.append(trace)\n",
-    "\n",
-    "# Define the layout\n",
-    "app.layout = html.Div(\n",
-    "    style={'display': 'grid', 'grid-template-rows': '1fr 1fr', 'height': '100vh'},  # Use CSS grid for layout\n",
-    "    children=[\n",
-    "        html.Div(\n",
-    "            style={'display': 'grid', 'grid-template-columns': '1fr 1fr', 'border': '1px solid black'},  # First row with two columns\n",
-    "            children=[\n",
-    "                html.Div(\n",
-    "                    style={'border': '1px solid black', 'background-color': '#E3FAF7', 'padding': '10px'},  # Left column in first row\n",
-    "                    children=[\n",
-    "                        children=dcc.Markdown(\n",
-    "                            \"\"\"\n",
-    "                            **What is this app about?**\n",
-    "                            This is an app to show the graphic elements of Dash DAQ used to create a\n",
-    "                            interface for an IV curve tracer using a Keithley 2400 SourceMeter.\"\"\"\n",
-    "                        ),\n",
-    "                        \n",
-    "\n",
-    "                        html.Img(src=\"/assets/HYPERGRYD_LOGO_RGB_Color.jpg\", className=\"logo\"),\n",
-    "                        html.H1('Sensors'),\n",
-    "                        html.Div(className=\"knob-container\",children=[\n",
-    "                            daq.LEDDisplay(id=\"HTF_in\", label=\"HTF_in\", value=1.00),\n",
-    "                            daq.LEDDisplay(id=\"HTF_out\", label=\"HTF_out\", value=2.00),\n",
-    "                            daq.LEDDisplay(id=\"HTF_flow\", label=\"HTF_flow\", value=12.00),\n",
-    "                            daq.LEDDisplay(id=\"AIR_in\", label=\"AIR_in\", value=1.00),\n",
-    "                            daq.LEDDisplay(id=\"AIR_out\", label=\"AIR_out\", value=14.00),\n",
-    "                            daq.LEDDisplay(id=\"AIR_flow\", label=\"AIR_flow\", value=15.00),\n",
-    "                            daq.LEDDisplay(id=\"RH_in\", label=\"RH_in\", value=16.00),\n",
-    "                            daq.LEDDisplay(id=\"RH_out\", label=\"RH_out\", value=19.00),\n",
-    "                            daq.LEDDisplay(id=\"deltaP\", label=\"deltaP\", value=35.00)\n",
-    "                        ]),\n",
-    "                        \n",
-    "                        \n",
-    "                        # Add content for the left column of the first row here\n",
-    "                    ]\n",
-    "                ),\n",
-    "                html.Div(\n",
-    "                    style={'border': '1px solid black', 'background-color': 'lightgrey', 'padding': '10px'},  # Right column in first row\n",
-    "                    children=[\n",
-    "                        html.H1('Actuators'),\n",
-    "                        \n",
-    "                        daq.ToggleSwitch(\n",
-    "                            id=\"my-toggle-switch\",\n",
-    "                            label=\"Automatic | Manual\",\n",
-    "                            color=\"red\",\n",
-    "                            value = True\n",
-    "                        ),\n",
-    "                        \n",
-    "                        daq.Knob(\n",
-    "                                    id=\"my-knob\",\n",
-    "                                    min= 0,\n",
-    "                                    max=100,\n",
-    "                                    disabled=False,\n",
-    "                            \n",
-    "                                    label=\"Valves setting\",\n",
-    "                                    scale={\"start\": 0, \"labelInterval\": 5, \"interval\": 5},\n",
-    "                                    color={\n",
-    "                                        \"gradient\": True,\n",
-    "                                        \"ranges\": {\"blue\": [30, 75], \"red\": [75, 100]},}\n",
-    "                            \n",
-    "                        \n",
-    "                                ),\n",
-    "                        \n",
-    "                        html.Div(\n",
-    "                             daq.LEDDisplay(id=\"my-leddisplay\", value=\"40\", color=\"#39FF14\"),\n",
-    "                        )\n",
-    "                        # Add content for the right column of the first row here\n",
-    "                    ],\n",
-    "                    \n",
-    "                )\n",
-    "            ]\n",
-    "        ),\n",
-    "        html.Div(\n",
-    "            style={'border': '1px solid black','background-color': \"#DDE7DB\", 'padding': '10px'},  # Second row with single column\n",
-    "            children=[\n",
-    "                html.H1('Charts'),\n",
-    "                #fig = make_subplots(rows=1, cols=2)\n",
-    "                html.Div(dcc.Graph(id=\"my-graph\", figure= {}),\n",
-    "                         className=\"row\"),\n",
-    "                dcc.Interval(id=\"timing\", interval=1000, n_intervals=2),\n",
-    "                # Add content for the bottom row here\n",
-    "            ]\n",
-    "        )\n",
-    "    ]\n",
-    ")\n",
-    "@app.callback(\n",
-    "    Output(\"my-leddisplay\", \"value\"),\n",
-    "    Input(\"my-knob\", \"value\"),\n",
-    "    \n",
-    ")\n",
-    "def update(knob_value):\n",
-    "    \n",
-    "    return knob_value\n",
-    "\n",
-    "#in callbacko dorost kon ke ba on/off kardane manual in disable beshe\n",
-    "@app.callback(\n",
-    "    Output(\"my_knob\",\"disabled\"),\n",
-    "    Input(\"my-toggle-switch\",\"value\")\n",
-    ")\n",
-    "def update(Automatic):\n",
-    "    if Automatic:\n",
-    "        return disabled\n",
-    "    else:\n",
-    "        return \n",
-    "\n",
-    "\n",
-    "@app.callback(\n",
-    "    Output(\"HTF_in\", \"value\"),\n",
-    "    Output(\"HTF_out\", \"value\"),\n",
-    "    Output(\"my-graph\", \"figure\"),\n",
-    "    Input(\"timing\", \"n_intervals\"),\n",
-    ") \n",
-    "    \n",
-    "\n",
-    "    \n",
-    "def update_g(n_intervals):\n",
-    "    pressure_1 = randrange(10)  # mimics data pulled from live database\n",
-    "    pressure_2 = randrange(10)  # mimics data pulled from live database\n",
-    "\n",
-    "    fig = go.Figure(\n",
-    "        [\n",
-    "            go.Bar(\n",
-    "                x=[\"HTF_in\"],\n",
-    "                y=[pressure_1],\n",
-    "            ),\n",
-    "            go.Bar(\n",
-    "                x=[\"HTF_out\"],\n",
-    "                y=[pressure_2],\n",
-    "            ),\n",
-    "            go.Bar(\n",
-    "                x=[\"HTF_flow\"],\n",
-    "                y=[pressure_1],\n",
-    "            ),\n",
-    "            go.Bar(\n",
-    "                x=[\"AIR_in\"],\n",
-    "                y=[pressure_1],\n",
-    "            ),\n",
-    "            go.Bar(\n",
-    "                x=[\"AIR_out\"],\n",
-    "                y=[pressure_1],\n",
-    "            ),    \n",
-    "            \n",
-    "        ]\n",
-    "    )\n",
-    "    \n",
-    "    fig.update_layout(yaxis={\"range\": [0, 20]})\n",
-    "\n",
-    "    return pressure_1, pressure_2, fig\n",
-    "\n",
-    "    \n",
-    "\n",
-    "\n",
-    "if __name__ == '__main__':\n",
-    "    app.run_server( debug=True,port =9797, mode= \"inline\")\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "7bb86c0f",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3 (ipykernel)",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.11.2"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+import dash
+import dash_html_components as html
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import dash_daq as daq
+from jupyter_dash import JupyterDash
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+import dash_core_components as dcc
+import plotly.express as px
+from dash.dependencies import Input, Output
+import pandas as pd
+
+
+
+app = Dash(__name__)
+server = app.server
+
+# Create a Plotly subplot with multiple subplots
+#fig = make_subplots(rows=2, cols=2, subplot_titles=('HTF_in', 'HTF_out', 'HTF_flow', 'AIR_in'))
+
+# Define the initial traces for each subplot
+# traces = []
+# for i, col in enumerate(df.columns):
+#     trace = go.Scatter(x=[], y=[], mode='lines', name=col)
+#     fig.add_trace(trace, row=(i // 3) + 1, col=(i % 3) + 1)
+#     traces.append(trace)
+
+# Define the layout
+app.layout = html.Div(
+    style={'display': 'grid', 'grid-template-rows': '1fr 1fr', 'height': '100vh'},  # Use CSS grid for layout
+    children=[
+        html.Div(
+            style={'display': 'grid', 'grid-template-columns': '1fr 1fr', 'border': '1px solid black'},  # First row with two columns
+            children=[
+                html.Div(
+                    style={'border': '1px solid black', 'background-color': '#E3FAF7', 'padding': '10px'},  # Left column in first row
+                    children=[
+                        
+                        
+
+                        html.Img(src="/assets/HYPERGRYD_LOGO_RGB_Color.jpg", className="logo"),
+                        html.H1('Sensors'),
+                        html.Div(className="knob-container",children=[
+                            daq.LEDDisplay(id="HTF_in", label="HTF_in", value=1.00),
+                            daq.LEDDisplay(id="HTF_out", label="HTF_out", value=2.00),
+                            daq.LEDDisplay(id="HTF_flow", label="HTF_flow", value=12.00),
+                            daq.LEDDisplay(id="AIR_in", label="AIR_in", value=1.00),
+                            daq.LEDDisplay(id="AIR_out", label="AIR_out", value=14.00),
+                            daq.LEDDisplay(id="AIR_flow", label="AIR_flow", value=15.00),
+                            daq.LEDDisplay(id="RH_in", label="RH_in", value=16.00),
+                            daq.LEDDisplay(id="RH_out", label="RH_out", value=19.00),
+                            daq.LEDDisplay(id="deltaP", label="deltaP", value=35.00)
+                        ]),
+                        
+                        
+                        # Add content for the left column of the first row here
+                    ]
+                ),
+                html.Div(
+                    style={'border': '1px solid black', 'background-color': 'lightgrey', 'padding': '10px'},  # Right column in first row
+                    children=[
+                        html.H1('Actuators'),
+                        
+                        daq.ToggleSwitch(
+                            id="my-toggle-switch",
+                            label="Automatic | Manual",
+                            color="red",
+                            value = True
+                        ),
+                        
+                        daq.Knob(
+                                    id="my-knob",
+                                    min= 0,
+                                    max=100,
+                                    disabled=False,
+                            
+                                    label="Valves setting",
+                                    scale={"start": 0, "labelInterval": 5, "interval": 5},
+                                    color={
+                                        "gradient": True,
+                                        "ranges": {"blue": [30, 75], "red": [75, 100]},}
+                            
+                        
+                                ),
+                        
+                        html.Div(
+                             daq.LEDDisplay(id="my-leddisplay", value="40", color="#39FF14"),
+                        )
+                        # Add content for the right column of the first row here
+                    ],
+                    
+                )
+            ]
+        ),
+        html.Div(
+            style={'border': '1px solid black','background-color': "#DDE7DB", 'padding': '10px'},  # Second row with single column
+            children=[
+                html.H1('Charts'),
+                #fig = make_subplots(rows=1, cols=2)
+                html.Div(dcc.Graph(id="my-graph", figure= {}),
+                         className="row"),
+                dcc.Interval(id="timing", interval=1000, n_intervals=2),
+                # Add content for the bottom row here
+            ]
+        )
+    ]
+)
+@app.callback(
+    Output("my-leddisplay", "value"),
+    Input("my-knob", "value"),
+    
+)
+def update(knob_value):
+    
+    return knob_value
+
+#in callbacko dorost kon ke ba on/off kardane manual in disable beshe
+@app.callback(
+    Output("my_knob","disabled"),
+    Input("my-toggle-switch","value")
+)
+def update(Automatic):
+    if Automatic:
+        return disabled
+    else:
+        return 
+
+
+@app.callback(
+    Output("HTF_in", "value"),
+    Output("HTF_out", "value"),
+    Output("my-graph", "figure"),
+    Input("timing", "n_intervals"),
+) 
+    
+
+    
+def update_g(n_intervals):
+    pressure_1 = randrange(10)  # mimics data pulled from live database
+    pressure_2 = randrange(10)  # mimics data pulled from live database
+
+    fig = go.Figure(
+        [
+            go.Bar(
+                x=["HTF_in"],
+                y=[pressure_1],
+            ),
+            go.Bar(
+                x=["HTF_out"],
+                y=[pressure_2],
+            ),
+            go.Bar(
+                x=["HTF_flow"],
+                y=[pressure_1],
+            ),
+            go.Bar(
+                x=["AIR_in"],
+                y=[pressure_1],
+            ),
+            go.Bar(
+                x=["AIR_out"],
+                y=[pressure_1],
+            ),    
+            
+        ]
+    )
+    
+    fig.update_layout(yaxis={"range": [0, 20]})
+
+    return pressure_1, pressure_2, fig
+
+    
+
+
+if __name__ == '__main__':
+    app.run_server( debug=True,port =9797, mode= "inline")
