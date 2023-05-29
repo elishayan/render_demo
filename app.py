@@ -101,7 +101,7 @@ app.layout = html.Div(
                 #fig = make_subplots(rows=1, cols=2)
                 html.Div(dcc.Graph(id="my-graph", figure= {}),
                          className="row"),
-                dcc.Interval(id="timing", interval=1000, n_intervals=2),
+                dcc.Interval(id="timing", interval=1000, n_intervals=1),
                 # Add content for the bottom row here
             ]
         )
@@ -116,16 +116,7 @@ def update(knob_value):
     
     return knob_value
 
-#in callbacko dorost kon ke ba on/off kardane manual in disable beshe
-@app.callback(
-    Output("my_knob","disabled"),
-    Input("my-toggle-switch","value")
-)
-def update(Automatic):
-    if Automatic:
-        return disabled
-    else:
-        return 
+
 
 
 @app.callback(
@@ -151,18 +142,7 @@ def update_g(n_intervals):
                 x=["HTF_out"],
                 y=[pressure_2],
             ),
-            go.Bar(
-                x=["HTF_flow"],
-                y=[pressure_1],
-            ),
-            go.Bar(
-                x=["AIR_in"],
-                y=[pressure_1],
-            ),
-            go.Bar(
-                x=["AIR_out"],
-                y=[pressure_1],
-            ),    
+           
             
         ]
     )
@@ -175,4 +155,4 @@ def update_g(n_intervals):
 
 
 if __name__ == '__main__':
-    app.run_server( debug=True,port =9797, mode= "inline")
+    app.run_server( debug=True,port =9797)
