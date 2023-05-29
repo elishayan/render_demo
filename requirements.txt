@@ -1,0 +1,6 @@
+dash
+pandas
+gunicorn
+dash-tools
+dash_daq
+ploty
