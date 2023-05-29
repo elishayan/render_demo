@@ -14,6 +14,8 @@ import pandas as pd
 
 app = JupyterDash(__name__)
 server = app.server
+app.css.config.serve_locally = True
+app.scripts.config.serve_locally = True
 
 # Create a Plotly subplot with multiple subplots
 #fig = make_subplots(rows=2, cols=2, subplot_titles=('HTF_in', 'HTF_out', 'HTF_flow', 'AIR_in'))
