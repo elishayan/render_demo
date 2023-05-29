@@ -4,5 +4,4 @@ gunicorn
 dash_tools
 dash_daq
 plotly
-plotly.graph_objects
-jupyter_dash
+
