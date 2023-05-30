@@ -4,4 +4,3 @@ gunicorn
 dash_tools
 dash_daq
 plotly
-random
