@@ -7,6 +7,7 @@ import dash_html_components as html
 import dash_core_components as dcc
 import plotly.express as px
 from dash.dependencies import Input, Output
+from dash_bootstrap_templates import load_figure_template
 import pandas as pd
 from random import randrange
 
