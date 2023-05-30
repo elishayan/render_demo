@@ -12,7 +12,8 @@ from random import randrange
 
 
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
+load_figure_template("darkly")
 server = app.server
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
@@ -129,8 +130,11 @@ def update(knob_value):
 
     
 def update_g(n_intervals):
-    pressure_1 = randrange(10)  # mimics data pulled from live database
-    pressure_2 = randrange(10)  # mimics data pulled from live database
+    pressure_1 = randrange(40)  # mimics data pulled from live database
+    pressure_2 = randrange(10)# mimics data pulled from live database
+    pressure_3 = randrange(80)# mimics data pulled from live database
+    pressure_4 = randrange(60)# mimics data pulled from live database
+    pressure_5 = randrange(60)# mimics data pulled from live database
 
     fig = go.Figure(
         [
@@ -140,6 +144,23 @@ def update_g(n_intervals):
             ),
             go.Bar(
                 x=["HTF_out"],
+                y=[pressure_2],
+            ),
+            go.Bar(
+                x=["AIR_in"],
+                y=[pressure_3],
+            ),
+            go.Bar(
+                x=["AIR_out"],
+                y=[pressure_4],
+            ),
+            go.Bar(
+                x=["AIR_flow"],
+                y=[pressure_5],
+            ),
+            
+             go.Bar(
+                x=["RH_in"],
                 y=[pressure_2],
             ),
            
